@@ -1,4 +1,3 @@
-ID: BUTTON_FONT_LABEL
-LINK_TO: "fontmanager.c"
-NICKNAME_TYPE: DYNAMIC
-DEFAULT_NICK: "Default Font"
+Button_ID: 5
+Display_Text: "Fonts"
+Link_Source: "fontmanager.c"
