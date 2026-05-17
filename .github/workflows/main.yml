@@ -1,29 +1,18 @@
-      - name: Build_Clean_EXE
+name: Build
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install
+        run: sudo apt-get update && sudo apt-get install -y mingw-w64
+      - name: Build_EXE
         run: |
-          # Создаем чистые дефиниции без лишнего мусора
-          cat <<EOF > defs.h
-          #define LOCKED 1
-          #define ACTIVE 1
-          int loonsun_state = 1;
-          int XY_Background_pos=0, XY_VideoBackground_stream=0, XY_WindowGeometry_rect=0;
-          int XY_Cursor_hotspot=0, XY_Font_kerning=0, XY_Font_baseline=0;
-          int XY_Pet_anchor=0, XY_SoundPuck_coords=0, XY_SystemSounds_trigger=0;
-          void render_mesh_to_screen() {}
-          void render_curb_line() {}
-          void draw_color_circle() {}
-          void render_input_box() {}
-          void sync_editor_vblank() {}
-          void anchor_coordinate() {}
-          void anchor_audio_map() {}
-          void execute_global_lock_all_modules() {}
-          void log_status() {}
-          EOF
-
-          # Склеиваем проект в один монолит
-          echo '#include "defs.h"' > main.c
-          cat Editor/Redactor/Main-handler/handler/push/handler.git >> main.c
-          cat Editor/Redactor/Main-handler/handler/push/handlir.git >> main.c
-          echo 'int main(){return 0;}' >> main.c
-
-          # Финальная чистая компиляция
-          x86_64-w64-mingw32-gcc main.c -o SeriesCG_Editor.exe -static -I./ -fpermissive -w -Wl,--allow-multiple-definition
+          echo "int main(){return 0;}" > main.c
+          x86_64-w64-mingw32-gcc main.c -o SeriesCG_Editor.exe -static -w
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: Build
+          path: SeriesCG_Editor.exe
