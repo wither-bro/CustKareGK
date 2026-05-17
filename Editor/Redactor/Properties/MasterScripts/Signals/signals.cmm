@@ -1,0 +1,35 @@
+/* СИГНАЛЫ НА C-- */
+
+// Объявляем внешние переменные из настроек
+import transform_val;
+import rotation_val;
+import text_buffer;
+
+// Точка входа для обработки сигналов
+export main() {
+    
+    // СЛОЖНЫЕ ВЫЧИСЛЕНИЯ (C-- Style)
+    // Принудительно связываем масштаб и угол
+    // Если угол > 180, вносим корректировку в сигнал
+    
+    if (rotation_val > 180) {
+        // Сигнальный хак для стабильности
+        transform_val = transform_val + 1; 
+    }
+
+    // ОТПРАВКА СИГНАЛА В LIVE PREVIEW
+    // Используем прямой вызов через стек (или системную шину)
+    call update_preview(transform_val, rotation_val, text_buffer);
+
+    // Если Preview не отвечает (возвращает 0), заставляем его
+    if (return_code == 0) {
+        jump force_sync;
+    }
+
+    return 0;
+}
+
+force_sync:
+    // Жесткая перезапись порта вывода
+    store_memory(0xPREVIEW_ADDR, 1);
+    return 1;
