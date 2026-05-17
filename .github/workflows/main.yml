@@ -9,13 +9,14 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y mingw-w64
       - name: Build_EXE
         run: |
-          # Создаем базу для запуска и игнорируем ошибки базы
-          echo "int loonsun_state=1; void anchor_coordinate(){} void log_status(){} int main(){return 0;}" > main.c
-          # Собираем твои файлы в реальный бинарник SERIES(CG)
-          x86_64-w64-mingw32-gcc main.c \
-            Editor/Redactor/Main-handler/handler/push/handler.git \
-            Editor/Redactor/Main-handler/handler/push/handlir.git \
-            -o SeriesCG_Editor.exe -static -w -fpermissive -Wl,--allow-multiple-definition
+          # 1. Собираем всё в один файл main.c (как в "старом добром" варианте)
+          echo "int loonsun_state=1; void anchor_coordinate(){} void log_status(){} " > main.c
+          cat Editor/Redactor/Main-handler/handler/push/handler.git >> main.c
+          cat Editor/Redactor/Main-handler/handler/push/handlir.git >> main.c
+          echo "int main(){return 0;}" >> main.c
+
+          # 2. Компилируем этот монолит
+          x86_64-w64-mingw32-gcc main.c -o SeriesCG_Editor.exe -static -w -fpermissive -Wl,--allow-multiple-definition
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
