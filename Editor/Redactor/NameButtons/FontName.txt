@@ -1,6 +1,4 @@
-// Привязка названия к менеджеру шрифтов
-@bind: fontmanager.c -> get_active_font_name()
-
-[Display_Name]: "Fonts"
-[Source_File]: "fontmanager.c"
-[Default_Text]: "Select Font..."
+ID: BUTTON_FONT_LABEL
+LINK_TO: "fontmanager.c"
+NICKNAME_TYPE: DYNAMIC
+DEFAULT_NICK: "Default Font"
