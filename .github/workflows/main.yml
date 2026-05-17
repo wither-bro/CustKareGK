@@ -1,23 +1,23 @@
-      - name: Compile Windows .EXE (Total Ignore Mode)
+name: Build-SeriesCG
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup
+        run: sudo apt-get update && sudo apt-get install -y mingw-w64
+
+      - name: Compile
         run: |
-          # Мы добавляем 'int main(){return 0;}' прямо в поток компиляции, 
-          # чтобы .exe был валидным, даже если в твоих .git файлах нет точки входа.
-          
           echo "int main(){return 0;}" > stub.c
+          x86_64-w64-mingw32-gcc -x c stub.c Editor/Redactor/Main-handler/handler/push/handler.git Editor/Redactor/Main-handler/handler/push/handlir.git -o SeriesCG_Editor.exe -static -I./ -fpermissive -w -Wl,--allow-multiple-definition -Wl,-z,muldefs
 
-          x86_64-w64-mingw32-gcc -x c stub.c \
-            Editor/Redactor/Main-handler/handler/push/handler.git \
-            Editor/Redactor/Main-handler/handler/push/handlir.git \
-            -o SeriesCG_Editor.exe \
-            -static -I./ \
-            -fpermissive \
-            -w \
-            -Wl,--allow-multiple-definition \
-            -Wl,-z,muldefs
-
-      - name: Upload EXE Artifact
+      - name: Save
         uses: actions/upload-artifact@v4
         with:
-          name: SERIES-CG-Final-Build
+          name: SeriesCG-Build
           path: SeriesCG_Editor.exe
-          retention-days: 1
