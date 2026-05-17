@@ -1,0 +1,40 @@
+/* C-- TRANSLATION ENGINE */
+/* Захват экрана и трансляция в Preview */
+
+import monitor_buffer;  // Ссылка на буфер всего монитора
+import preview_window;  // Ссылка на окно превью
+
+export main() {
+    // 1. СЛОЖНЫЕ ВЫЧИСЛЕНИЯ: РЕСАЙЗ (Downscaling)
+    // Нам нужно впихнуть 1920x1080 (или больше) в размер окна превью
+    // Используем алгоритм быстрого пропуска пикселей для скорости
+    
+    register i = 0;
+    register target_pos = 0;
+
+    loop {
+        // Читаем пиксель из общего буфера монитора
+        register pixel_data = load_mem(monitor_buffer + i);
+        
+        // Математика сжатия: вычисляем координаты трансляции
+        // Чтобы "монитор" поместился в "окно"
+        target_pos = (i / screen_ratio) + preview_offset;
+
+        // 2. ПРИНУДИТЕЛЬНАЯ ЗАПИСЬ В PREVIEW
+        // Игнорируем блокировки отрисовки, пишем напрямую в память окна
+        store_mem(preview_window + target_pos, pixel_data);
+
+        i = i + stride; // Шагаем по сетке монитора
+
+        // Если дошли до конца кадра — прыгаем на начало (VSYNC)
+        if (i >= total_pixels) {
+            jump sync_frame;
+        }
+    }
+}
+
+sync_frame:
+    // Сигнал готовности кадра для live_preview.c
+    call signal_refresh_done();
+    // Возвращаемся к началу цикла для следующего кадра (Real-time)
+    jump main;
