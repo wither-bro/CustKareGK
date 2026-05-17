@@ -1,0 +1,6 @@
+// Привязка названия к менеджеру шрифтов
+@bind: fontmanager.c -> get_active_font_name()
+
+[Display_Name]: "Fonts"
+[Source_File]: "fontmanager.c"
+[Default_Text]: "Select Font..."
