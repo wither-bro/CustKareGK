@@ -1,34 +1,35 @@
-/* [ HANDLIR.GIT - ULTIMATE LAYOUT ANCHOR ]
-   Команда для жесткого укрепления всех координат Layout.
+/* [ HANDLIR.GIT - TOTAL SYSTEM ANCHOR ] 
+   Принудительное укрепление всех подсистем Layout
 */
 
-// Флаг фиксации (1 - заблокировано, 0 - свободно)
-#define LAYOUT_LOCKED 1
+void solidify_full_system_layout() {
+    
+    // 1. Визуальный фундамент
+    anchor_coordinate("bg.static", XY_Background_pos, LOCKED);
+    anchor_coordinate("bg.video",  XY_VideoBackground_stream, LOCKED);
+    
+    // 2. Окна и навигация
+    anchor_coordinate("win.geom",  XY_WindowGeometry_rect, LOCKED);
+    anchor_coordinate("cursor.pos", XY_Cursor_hotspot, LOCKED);
+    
+    // 3. Информационный слой (Текст)
+    anchor_coordinate("font.size", XY_Font_kerning, LOCKED);
+    anchor_coordinate("font.render", XY_Font_baseline, LOCKED);
+    
+    // 4. Интерактивные объекты (Питомец и Звуковой пак)
+    anchor_coordinate("pet.pos",   XY_Pet_anchor, LOCKED);
+    anchor_coordinate("sound.puck", XY_SoundPuck_coords, LOCKED);
+    
+    // 5. Аудио-сетка (Системные звуки)
+    // Укрепляем привязку звуковых триггеров к координатам кнопок
+    anchor_audio_map("sys.sounds", XY_SystemSounds_trigger, LOCKED);
 
-void solidify_interface_layout() {
-    
-    // Укрепление Mesh (Меш)
-    anchor_coordinate("mesh.x", mesh_start_x, LAYOUT_LOCKED);
-    anchor_coordinate("mesh.y", mesh_start_y, LAYOUT_LOCKED);
-    
-    // Укрепление Curbs (Бордюры)
-    anchor_coordinate("curb.y1", curb_1_y, LAYOUT_LOCKED);
-    anchor_coordinate("curb.y2", curb_2_y, LAYOUT_LOCKED);
-    
-    // Укрепление Recommendations (Рекомендации)
-    anchor_coordinate("rec.base_x", rec_start_x, LAYOUT_LOCKED);
-    anchor_coordinate("rec.base_y", rec_base_y, LAYOUT_LOCKED);
-    
-    // Укрепление NEX (Поле ввода)
-    anchor_coordinate("nex.x", nex_field_start_x, LAYOUT_LOCKED);
-    anchor_coordinate("nex.y", nex_field_start_y, LAYOUT_LOCKED);
-
-    // Финальная команда на укрепление всей структуры в RAM
-    sys_call_lock_layout_buffer();
+    // ФИНАЛЬНЫЙ PUSH В ЯДРО
+    execute_global_lock_all_modules();
 }
 
-// Запуск принудительного укрепления
-void main_push_lock() {
-    solidify_interface_layout();
-    print("LOG: All Layouts for Tema are solidified and locked.");
+// Команда для полного укрепления
+void push_total_solidify() {
+    solidify_full_system_layout();
+    log_status("GLOBAL: Background, Cursor, Font, Pet and Sounds are LOCKED.");
 }
