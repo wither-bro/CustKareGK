@@ -1,0 +1,39 @@
+/* [ HANDLER.GIT - GLOBAL THEME & UI PUSHER ]
+   Этот файл собирает все Layout данные и применяет их при запуске палитры.
+*/
+
+#include "Editor/Redactor/Tema/Layout/XY-Mesh/mesh.x"
+#include "Editor/Redactor/Tema/Layout/XY-Mesh/mesh.y"
+#include "Editor/Redactor/Tema/Layout/XY-Curb/curb.x"
+#include "Editor/Redactor/Tema/Layout/XY-Curb/curb.y"
+#include "Editor/Redactor/Tema/Layout/XY-Recommendations/recommendations.x"
+#include "Editor/Redactor/Tema/Layout/XY-Recommendations/recommendations.y"
+#include "Editor/Redactor/Tema/Layout/XY-NEX/nex.x"
+#include "Editor/Redactor/Tema/Layout/XY-NEX/nex.y"
+
+void push_palette_ui_frame() {
+    // 1. ПУШИМ МЕШ (Главный квадрат)
+    render_mesh_to_screen(mesh_start_x, mesh_start_y, mesh_width, mesh_height);
+
+    // 2. ПУШИМ БОРДЮРЫ (Разделители)
+    render_curb_line(layout_x.start_x, curb_1_y, layout_x.end_x);
+    render_curb_line(layout_x.start_x, curb_2_y, layout_x.end_x);
+
+    // 3. ПУШИМ РЕКОМЕНДАЦИИ (Цикл отрисовки кнопок)
+    for (int i = 0; i < 13; i++) {
+        int rx = get_recommendation_x(i);
+        int ry = get_recommendation_y();
+        draw_color_circle(rx, ry, rec_button_width);
+    }
+
+    // 4. ПУШИМ NEX-ПОЛЕ (Ввод текста)
+    render_input_box(nex_field_start_x, nex_field_start_y, nex_field_width, nex_field_height);
+}
+
+// Глобальный сигнал на обновление (тот самый PUSH)
+void force_push_update() {
+    if (loonsun_state == ACTIVE) {
+        push_palette_ui_frame();
+        sync_editor_vblank(); // Синхронизация кадра
+    }
+}
