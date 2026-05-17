@@ -1,35 +1,29 @@
-      - name: Ultimate Brute Force Build
+      - name: Build_Clean_EXE
         run: |
-          # 1. Создаем заголовочный файл со всеми "нормальными" определениями
-          cat <<EOF > definitions.h
+          # Создаем чистые дефиниции без лишнего мусора
+          cat <<EOF > defs.h
           #define LOCKED 1
           #define ACTIVE 1
           int loonsun_state = 1;
-          int XY_Background_pos = 0, XY_VideoBackground_stream = 0, XY_WindowGeometry_rect = 0;
-          int XY_Cursor_hotspot = 0, XY_Font_kerning = 0, XY_Font_baseline = 0;
-          int XY_Pet_anchor = 0, XY_SoundPuck_coords = 0, XY_SystemSounds_trigger = 0;
-          void render_mesh_to_screen(...) {}
-          void render_curb_line(...) {}
-          void draw_color_circle(...) {}
-          void render_input_box(...) {}
+          int XY_Background_pos=0, XY_VideoBackground_stream=0, XY_WindowGeometry_rect=0;
+          int XY_Cursor_hotspot=0, XY_Font_kerning=0, XY_Font_baseline=0;
+          int XY_Pet_anchor=0, XY_SoundPuck_coords=0, XY_SystemSounds_trigger=0;
+          void render_mesh_to_screen() {}
+          void render_curb_line() {}
+          void draw_color_circle() {}
+          void render_input_box() {}
           void sync_editor_vblank() {}
-          void anchor_coordinate(...) {}
-          void anchor_audio_map(...) {}
+          void anchor_coordinate() {}
+          void anchor_audio_map() {}
           void execute_global_lock_all_modules() {}
-          void log_status(...) {}
+          void log_status() {}
           EOF
 
-          # 2. Склеиваем всё в один файл mega_build.c
-          # Мы убираем дубликат mesh_bottom_y через sed прямо на лету
-          echo '#include "definitions.h"' > mega_build.c
-          cat Editor/Redactor/Main-handler/handler/push/handler.git >> mega_build.c
-          cat Editor/Redactor/Main-handler/handler/push/handlir.git >> mega_build.c
-          
-          # Убираем main из .git если он там есть и ставим свой чистый
-          echo 'int main(){return 0;}' >> mega_build.c
+          # Склеиваем проект в один монолит
+          echo '#include "defs.h"' > main.c
+          cat Editor/Redactor/Main-handler/handler/push/handler.git >> main.c
+          cat Editor/Redactor/Main-handler/handler/push/handlir.git >> main.c
+          echo 'int main(){return 0;}' >> main.c
 
-          # 3. Компилируем без единого вопроса
-          x86_64-w64-mingw32-gcc mega_build.c \
-            -o SeriesCG_Editor.exe \
-            -static -I./ \
-            -fpermissive -w -Wl,--allow-multiple-definition
+          # Финальная чистая компиляция
+          x86_64-w64-mingw32-gcc main.c -o SeriesCG_Editor.exe -static -I./ -fpermissive -w -Wl,--allow-multiple-definition
