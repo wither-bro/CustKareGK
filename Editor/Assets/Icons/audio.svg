@@ -1,0 +1,18 @@
+<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="audioGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00FF88;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00AAFF;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <path d="M15 35 H30 L55 15 V85 L30 65 H15 V35 Z" 
+        fill="url(#audioGrad)" 
+        stroke="#222" 
+        stroke-width="2" />
+
+  <path d="M68 35 Q78 50 68 65" fill="none" stroke="url(#audioGrad)" stroke-width="5" stroke-linecap="round" />
+  <path d="M82 25 Q97 50 82 75" fill="none" stroke="url(#audioGrad)" stroke-width="5" stroke-linecap="round" opacity="0.6" />
+
+  <circle cx="38" cy="50" r="4" fill="#222" opacity="0.3" />
+</svg>
