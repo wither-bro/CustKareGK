@@ -1,0 +1,18 @@
+<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="videoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF512F;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#DD2476;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <rect x="10" y="20" width="80" height="60" rx="5" fill="#222" stroke="url(#videoGrad)" stroke-width="3" />
+
+  <path d="M42 40 L62 50 L42 60 Z" fill="url(#videoGrad)" />
+
+  <rect x="20" y="70" width="60" height="3" rx="1" fill="#444" />
+  <rect x="20" y="70" width="35" height="3" rx="1" fill="url(#videoGrad)" />
+
+  <rect x="13" y="25" width="4" height="4" fill="white" opacity="0.2" />
+  <rect x="83" y="25" width="4" height="4" fill="white" opacity="0.2" />
+</svg>
